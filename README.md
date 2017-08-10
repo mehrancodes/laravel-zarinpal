@@ -85,7 +85,8 @@ In the same controller in the method in which you redirect the customer to the Z
     // The total price for the order
     $invoice->totalPrice,
 
-    // Pass any parameter you want when the customer successfully do the payment and gets back to your site
+    // Pass any parameter you want when the customer successfully do the payment
+    // and gets back to your site
     ['paymentId' => $invoice->payment_id],
 
     // Callback URL
