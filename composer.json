@@ -1,6 +1,6 @@
 {
     "name": "rasulian/laravel-zarinpal",
-    "description": "A laravel package for ZarinPal gateway based on REST",
+    "description": "A Laravel package to accept and verify payments from ZarinPal gateway based on REST",
     "license": "MIT",
     "authors": [
         {
