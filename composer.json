@@ -1,0 +1,14 @@
+{
+    "name": "mehran/laravel-zarinpal",
+    "description": "A laravel package for ZarinPal gateway based on REST",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mehran Rasulian",
+            "email": "mehran.rasulian@gmail.com"
+        }
+    ],
+    "require": {
+        "wmateam/curling": "^0.7.5"
+    }
+}
