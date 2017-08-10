@@ -14,7 +14,17 @@ use wmateam\curling\CurlRequest;
 
 class Payment
 {
-    public function doPayment($amount, $params = [], $callbackUrl = null, $description = null)
+    /**
+     * Request for a new payment
+     *
+     * @param       $amount
+     * @param array $params
+     * @param null  $callbackUrl
+     * @param null  $description
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function request($amount, $params = [], $callbackUrl = null, $description = null)
     {
         // What type of ZarinPal request we want?
         $requestType = config('zarinpal.testing')?'sandbox':'www';
@@ -52,7 +62,15 @@ class Payment
         return $out;
     }
 
-    public function verifyPayment($amount, $authority)
+    /**
+     * Verify a payment by the authority
+     *
+     * @param $amount
+     * @param $authority
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function verify($amount, $authority)
     {
         // What type of ZarinPal request we want?
         $requestType = config('zarinpal.testing')?'sandbox':'www';
