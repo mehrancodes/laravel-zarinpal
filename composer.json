@@ -1,5 +1,5 @@
 {
-    "name": "mehran/laravel-zarinpal",
+    "name": "rasulian/laravel-zarinpal",
     "description": "A laravel package for ZarinPal gateway based on REST",
     "license": "MIT",
     "authors": [
