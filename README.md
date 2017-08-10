@@ -32,19 +32,20 @@ This is the default contents of the configuration:
 <?php
 
 return [
-    'params' => [
-        'merchant-id' => '',
+  'params' => [
+    'merchant-id' => '',
 
-        // Leave it empty if you're passing the callback url when doing the request
-        'callback-url' => '',
+    // Leave it empty if you're passing the callback url when doing the request
+    'callback-url' => '',
 
-        // A summary of your product or application
-        'description' => 'تصویر دنیای هنر',
-    ],
+    // A summary of your product or application, if needed
+    'description' => '',
+  ],
 
-    // Set to true if you are in the development environment
-    'testing' => false
+  // Set to true if you are in the development environment
+  'testing' => false
 ];
+
 
 ```
 
@@ -67,9 +68,9 @@ Let's get technical. In the controller in which you will redirect the customer t
 
     public function __construct(Payment $zarinPal)
     {
-        ...
-        $this->zarinPal = $zarinPal;
-        ...
+      ...
+      $this->zarinPal = $zarinPal;
+      ...
     }
 ```
 
