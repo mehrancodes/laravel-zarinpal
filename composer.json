@@ -1,6 +1,14 @@
 {
     "name": "rasulian/laravel-zarinpal",
     "description": "A Laravel package to accept and verify payments from ZarinPal gateway based on REST",
+    "keywords": [
+        "zarinpal",
+        "laravel",
+        "gateway",
+        "زرین پال",
+        "لاراول",
+        "درگاه پرداخت"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -10,6 +18,5 @@
     ],
     "require": {
         "wmateam/curling": "^0.7.5"
-    },
-    "version": "1.0.0"
+    }
 }
