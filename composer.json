@@ -18,5 +18,10 @@
     ],
     "require": {
         "wmateam/curling": "^0.7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rasulian\\ZarinPal\\": "src/"
+        }
     }
 }
