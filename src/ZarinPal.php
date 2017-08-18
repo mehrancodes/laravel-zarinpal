@@ -33,7 +33,7 @@ class ZarinPal
             array_set($errors, 'callback-url', 'The callback url field is required.');
 
         if ( isset($errors) )
-            return ['errors' => $errors];
+            return collect(['errors' => $errors]);
 
         // What type of ZarinPal request we want?
         $requestType = config('zarinpal.testing')?'sandbox':'www';
@@ -93,7 +93,7 @@ class ZarinPal
             array_set($errors, 'authority', 'The authority field is required.');
 
         if ( isset($errors) )
-            return ['errors' => $errors];
+            return collect(['errors' => $errors]);
 
         // What type of ZarinPal request we want?
         $requestType = config('zarinpal.testing')?'sandbox':'www';
