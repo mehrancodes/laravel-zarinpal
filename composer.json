@@ -19,9 +19,21 @@
     "require": {
         "wmateam/curling": "^0.7.5"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0",
+        "orchestra/testbench": "~3.0"
+    },
     "autoload": {
         "psr-4": {
             "Rasulian\\ZarinPal\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rasulian\\ZarinPal\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
     }
 }

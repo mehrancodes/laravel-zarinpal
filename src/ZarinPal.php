@@ -1,31 +1,40 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mehran
- * Date: 7/30/17
- * Time: 12:50 PM
- */
 
 namespace Rasulian\ZarinPal;
 
-
-use App\Collection;
+use Illuminate\Support\Collection;
 use wmateam\curling\CurlRequest;
 
-class Payment
+class ZarinPal
 {
     /**
      * Request for a new payment
      *
      * @param       $amount
      * @param array $params
-     * @param null  $callbackUrl
-     * @param null  $description
-     *
-     * @return \Illuminate\Support\Collection
+     * @param null $callbackUrl
+     * @param null $description
+     * @return Collection
      */
     public function request($amount, $params = [], $callbackUrl = null, $description = null)
     {
+        // Verify the inputs
+        $errors = [];
+        if (empty(config('zarinpal.params.merchant-id')))
+            array_set($errors, 'merchant-id', 'The merchant id field is required.');
+
+        if (empty($description) && empty(config('zarinpal.params.description')))
+            array_set($errors, 'description', 'The description field is required.');
+
+        if (empty($amount))
+            array_set($errors, 'amount', 'The amount field is required.');
+
+        if (empty($callbackUrl))
+            array_set($errors, 'callback-url', 'The callback url field is required.');
+
+        if ( isset($errors) )
+            return ['errors' => $errors];
+
         // What type of ZarinPal request we want?
         $requestType = config('zarinpal.testing')?'sandbox':'www';
 
@@ -68,10 +77,24 @@ class Payment
      * @param $amount
      * @param $authority
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function verify($amount, $authority)
     {
+        // Verify the inputs
+        $errors = [];
+        if (empty(config('zarinpal.params.merchant-id')))
+            array_set($errors, 'merchant-id', 'The merchant id field is required.');
+
+        if (empty($amount))
+            array_set($errors, 'amount', 'The amount field is required.');
+
+        if (empty($authority))
+            array_set($errors, 'authority', 'The authority field is required.');
+
+        if ( isset($errors) )
+            return ['errors' => $errors];
+
         // What type of ZarinPal request we want?
         $requestType = config('zarinpal.testing')?'sandbox':'www';
 
