@@ -2,8 +2,8 @@
 
 namespace Rasulian\ZarinPal;
 
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Collection;
-use Rasulian\ZarinPal\Exceptions\ArgumentsAreNull;
 use wmateam\curling\CurlRequest;
 
 class Payment
@@ -184,7 +184,7 @@ class Payment
      * @param null $description
      * @param null $authority
      * @param bool $isPaymantable Check if the method is called to validate a set of paymantable arguments
-     * @return array
+     * @throws HttpResponseException
      */
     private function validateArguments($amount, $callbackUrl = null, $description = null, $authority = null, $isPaymantable = false)
     {
