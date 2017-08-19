@@ -3,6 +3,7 @@
 namespace Rasulian\ZarinPal;
 
 use Illuminate\Support\Collection;
+use Rasulian\ZarinPal\Exceptions\ArgumentsAreNull;
 use wmateam\curling\CurlRequest;
 
 class Payment
@@ -18,22 +19,8 @@ class Payment
      */
     public function request($amount, $params = [], $callbackUrl = null, $description = null)
     {
-        // Verify the inputs
-        $errors = [];
-        if (empty(config('zarinpal.params.merchant-id')))
-            array_set($errors, 'merchant-id', 'The merchant id field is required.');
-
-        if (empty($description) && empty(config('zarinpal.params.description')))
-            array_set($errors, 'description', 'The description field is required.');
-
-        if (empty($amount))
-            array_set($errors, 'amount', 'The amount field is required.');
-
-        if (empty($callbackUrl))
-            array_set($errors, 'callback-url', 'The callback url field is required.');
-
-        if ( isset($errors) )
-            return collect(['errors' => $errors]);
+        // validate the arguments before creating any request to Zarin Pal.
+        $this->validateArguments($amount, $callbackUrl, $description, true);
 
         // What type of ZarinPal request we want?
         $requestType = config('zarinpal.testing')?'sandbox':'www';
@@ -81,19 +68,8 @@ class Payment
      */
     public function verify($amount, $authority)
     {
-        // Verify the inputs
-        $errors = [];
-        if (empty(config('zarinpal.params.merchant-id')))
-            array_set($errors, 'merchant-id', 'The merchant id field is required.');
-
-        if (empty($amount))
-            array_set($errors, 'amount', 'The amount field is required.');
-
-        if (empty($authority))
-            array_set($errors, 'authority', 'The authority field is required.');
-
-        if ( isset($errors) )
-            return collect(['errors' => $errors]);
+        // validate the arguments before creating any request to Zarin Pal.
+        $this->validateArguments($amount, null, null, $authority);
 
         // What type of ZarinPal request we want?
         $requestType = config('zarinpal.testing')?'sandbox':'www';
@@ -200,5 +176,35 @@ class Payment
                 return null;
                 break;
         }
+    }
+
+    /**
+     * @param $amount
+     * @param null $callbackUrl
+     * @param null $description
+     * @param null $authority
+     * @param bool $isPaymantable Check if the method is called to validate a set of paymantable arguments
+     * @throws ArgumentsAreNull
+     */
+    private function validateArguments($amount, $callbackUrl = null, $description = null, $authority = null, $isPaymantable = false)
+    {
+        $errors = [];
+        if (empty(config('zarinpal.params.merchant-id')))
+            array_set($errors, 'merchant-id', 'The merchant id field is required.');
+
+        if (empty($amount))
+            array_set($errors, 'amount', 'The amount field is required.');
+
+        if ($isPaymantable && empty($callbackUrl))
+        array_set($errors, 'callback-url', 'The callback url field is required.');
+
+        if ( !$isPaymantable && empty($authority))
+            array_set($errors, 'authority', 'The authority field is required.');
+
+        if ($isPaymantable && empty($description) && empty(config('zarinpal.params.description')))
+        array_set($errors, 'description', 'The description field is required.');
+
+        if (isset($errors))
+            throw new ArgumentsAreNull($errors);
     }
 }
