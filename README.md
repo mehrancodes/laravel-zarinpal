@@ -77,31 +77,29 @@ Let's get technical. In the controller in which you will redirect the customer t
 In the same controller in the method in which you redirect the customer to the ZarinPal you must set the $order that you've probably build up during the checkout-process.
 
 ```
-  $invoice = $this->invoiceRepo->getCurrentInvoice();
+public function doPayment(Request $request)
+{
+    $invoice = $this->invoiceRepo->getCurrentInvoice();
+    // Doing the payment
+    $payment = $this->zarinPal->request(
+        // The total price for the order
+        $invoice->totalPrice,
+        // Pass any parameter you want when the customer successfully do the payment
+        // and gets back to your site
+        ['paymentId' => $invoice->payment_id],
+        // Callback URL
+        route('checkout.payment.callback'),
+        // A summary of your product or application
+        'Good product'
+    );
 
-  // Doing the payment
-  $payment = $this->zarinPal->request(
-  
-    // The total price for the order
-    $invoice->totalPrice,
+    // Throw an exception if the payment request result had any error
+    if ($payment->get('result') == 'warning')
+        throw new Exception($payment->get('error'));
 
-    // Pass any parameter you want when the customer successfully do the payment
-    // and gets back to your site
-    ['paymentId' => $invoice->payment_id],
-
-    // Callback URL
-    route('checkout.payment.callback'),
-
-    // A summary of your product or application
-    'Good product'
-  );
-
-  // Throw an exception if the payment request result had any error
-  if ($payment->get('result') == 'warning')
-      throw new Exception($payment->get('error'));
-
-  // Redirect the customer to the ZarinPal gateway to do the payment
-  return redirect()->away($payment->get('url'));
+    // Redirect the customer to the ZarinPal gateway to do the payment
+    return redirect()->away($payment->get('url'));
+}
 ```
 
 
@@ -132,30 +130,31 @@ In the controller that handles the request:
         $this->zarinPal = $zarinPal;
         ...
     }
+    
+    ...
 ```
 
 Then, in the same controller, in the method you use to handle the request coming from the payment provider, use the `verify` method:
 
 ```
-  public function verifyPayment(Request $request)
-    {
-        $authority = $request->input('Authority');
-        $invoice = $this->invoiceRepo->getCurrentInvoice();
-    
-        $verify = $this->zarinPal->verify($invoice->totalPrice, $authority);
+public function verifyPayment(Request $request)
+{
+    $authority = $request->input('Authority');
+    $invoice = $this->invoiceRepo->getCurrentInvoice();
 
-        
-        if ($verify->get('result') == 'success') {
-        
+    $verify = $this->zarinPal->verify($invoice->totalPrice, $authority);
+
+    if ($verify->get('result') == 'success') {
+
         ...
         // Do the needed stuff If the verify was success
         ...
-        
+
         // If not, we can check which status code is given back to us from the ZarinPal gateway
         // and show a message error correspond to the status code.
-        
-        } else if (in_array($verify->get('code'), [-42, -54])) {
 
-            return view('shopping.payment')->with(['error' => $verify->get('error')]);
-        }
+    } else if (in_array($verify->get('code'), [-42, -54])) {
+        return view('shopping.payment')->with(['error' => $verify->get('error')]);
+    }
+}
 ```
