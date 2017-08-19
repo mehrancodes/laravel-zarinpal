@@ -2,7 +2,6 @@
 
 namespace Rasulian\ZarinPal\Test;
 
-use Rasulian\ZarinPal\Exceptions\ArgumentsAreNull;
 use Rasulian\ZarinPal\Payment;
 
 class ZarinPalTest extends TestCase
@@ -13,12 +12,7 @@ class ZarinPalTest extends TestCase
         // Make the merchant id empty
         $this->app['config']->set('zarinpal.params.merchant-id', '');
 
-        try {
-            $content = (new Payment)->request(1000, [], 'callback', 'description');
-
-        } catch (ArgumentsAreNull $e) {
-            dd($e->getCustomMessage());
-        }
+        $content = (new Payment)->request(1000, [], 'callback', 'description');
 
         // No time already
     }

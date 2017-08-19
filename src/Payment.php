@@ -184,7 +184,7 @@ class Payment
      * @param null $description
      * @param null $authority
      * @param bool $isPaymantable Check if the method is called to validate a set of paymantable arguments
-     * @throws ArgumentsAreNull
+     * @return array
      */
     private function validateArguments($amount, $callbackUrl = null, $description = null, $authority = null, $isPaymantable = false)
     {
@@ -196,15 +196,15 @@ class Payment
             array_set($errors, 'amount', 'The amount field is required.');
 
         if ($isPaymantable && empty($callbackUrl))
-        array_set($errors, 'callback-url', 'The callback url field is required.');
+            array_set($errors, 'callback-url', 'The callback url field is required.');
 
-        if ( !$isPaymantable && empty($authority))
+        if ( !$isPaymantable && empty($authority) )
             array_set($errors, 'authority', 'The authority field is required.');
 
         if ($isPaymantable && empty($description) && empty(config('zarinpal.params.description')))
-        array_set($errors, 'description', 'The description field is required.');
+            array_set($errors, 'description', 'The description field is required.');
 
-        if (isset($errors))
-            throw new ArgumentsAreNull($errors);
+        if ( !empty($errors) )
+            throw new HttpResponseException(response($errors));
     }
 }
