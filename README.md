@@ -27,7 +27,7 @@ php artisan vendor:publish --provider="Rasulian\ZarinPal\ZarinPalServiceProvider
 This is the default contents of the configuration:
 
 ```
-// config/laravel-zarinpal.php
+// config/zarinpal.php
 
 <?php
 
