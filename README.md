@@ -27,7 +27,7 @@ php artisan vendor:publish --provider="Rasulian\ZarinPal\ZarinPalServiceProvider
 This is the default contents of the configuration:
 
 ```
-// config/laravel-zarinpal.php
+// config/zarinpal.php
 
 <?php
 
@@ -51,7 +51,7 @@ return [
 
 ## Usage
 
-**1. Redirecting to customer to the payment provider**
+**1. Redirecting the customer to the Zarin Pal**
 
 Let's get technical. In the controller in which you will redirect the customer to the ZarinPal you must inject the payment gateway like so:
 
