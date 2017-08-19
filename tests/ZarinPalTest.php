@@ -2,7 +2,7 @@
 
 namespace Rasulian\ZarinPal\Test;
 
-use Rasulian\ZarinPal\ZarinPal;
+use Rasulian\ZarinPal\Payment;
 
 class ZarinPalTest extends TestCase
 {
@@ -12,7 +12,7 @@ class ZarinPalTest extends TestCase
         // Make the merchant id empty
         $this->app['config']->set('zarinpal.params.merchant-id', '');
 
-        $content = (new ZarinPal)->request(1000, [], 'callback', 'description');
+        $content = (new Payment)->request(1000, [], 'callback', 'description');
 
         // No time already
     }

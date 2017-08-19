@@ -5,7 +5,7 @@ namespace Rasulian\ZarinPal;
 use Illuminate\Support\Collection;
 use wmateam\curling\CurlRequest;
 
-class ZarinPal
+class Payment
 {
     /**
      * Request for a new payment
