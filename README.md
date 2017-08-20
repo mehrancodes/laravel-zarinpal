@@ -19,7 +19,7 @@ You'll need to register the service provider:
 ];
 ```
 
-To publish the config file to config/laravel-zarinpal.php run:
+To publish the config file to config/zarinpal.php run:
 ```
 php artisan vendor:publish --provider="Rasulian\ZarinPal\ZarinPalServiceProvider"
 ```
