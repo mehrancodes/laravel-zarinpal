@@ -82,13 +82,17 @@ public function doPayment(Request $request)
     $invoice = $this->invoiceRepo->getCurrentInvoice();
     // Doing the payment
     $payment = $this->zarinPal->request(
+    
         // The total price for the order
         $invoice->totalPrice,
+        
         // Pass any parameter you want when the customer successfully do the payment
         // and gets back to your site
         ['paymentId' => $invoice->payment_id],
+        
         // Callback URL
         route('checkout.payment.callback'),
+        
         // A summary of your product or application
         'Good product'
     );
