@@ -42,7 +42,7 @@ return [
     'description' => '',
   ],
 
-  // Set to true if you are in the development environment
+  // Set to true if you want to test the payment in sandbox mode
   'testing' => false
 ];
 
