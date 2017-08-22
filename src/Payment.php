@@ -11,16 +11,16 @@ class Payment
     /**
      * Request for a new payment
      *
-     * @param       $amount
+     * @param int $amount
      * @param array $params
-     * @param null $callbackUrl
-     * @param null $description
+     * @param string $callbackUrl
+     * @param string $description
      * @return Collection
      */
-    public function request($amount, $params = [], $callbackUrl = null, $description = null)
+    public function request(int $amount, array $params = [], string $callbackUrl = '', string $description = '')
     {
         // validate the arguments before creating any request to Zarin Pal.
-        $this->validateArguments($amount, $callbackUrl, $description, true);
+        $this->validateArguments($callbackUrl, $description, '', true);
 
         // What type of ZarinPal request we want?
         $requestType = config('zarinpal.testing')?'sandbox':'www';
@@ -66,10 +66,10 @@ class Payment
      *
      * @return Collection
      */
-    public function verify($amount, $authority)
+    public function verify(int $amount, string $authority = '')
     {
         // validate the arguments before creating any request to Zarin Pal.
-        $this->validateArguments($amount, null, null, $authority);
+        $this->validateArguments(null, null, $authority);
 
         // What type of ZarinPal request we want?
         $requestType = config('zarinpal.testing')?'sandbox':'www';
@@ -179,32 +179,30 @@ class Payment
     }
 
     /**
-     * @param $amount
-     * @param null $callbackUrl
-     * @param null $description
-     * @param null $authority
+     * @param $callbackUrl
+     * @param $description
+     * @param $authority
      * @param bool $isPaymantable Check if the method is called to validate a set of paymantable arguments
      * @throws HttpResponseException
      */
-    private function validateArguments($amount, $callbackUrl = null, $description = null, $authority = null, $isPaymantable = false)
+    private function validateArguments($callbackUrl = '', $description = '', $authority = '', $isPaymantable = false)
     {
         $errors = [];
         if (empty(config('zarinpal.params.merchant-id')))
-            array_set($errors, 'merchant-id', 'The merchant id field is required.');
+            array_push($errors, 'The merchant id field is required.');
 
-        if (empty($amount))
-            array_set($errors, 'amount', 'The amount field is required.');
+        if ($isPaymantable) {
+            if (empty($callbackUrl))
+                array_push($errors, 'The callback url field is required.');
 
-        if ($isPaymantable && empty($callbackUrl))
-            array_set($errors, 'callback-url', 'The callback url field is required.');
+            if (empty($description) && empty(config('zarinpal.params.description')))
+                array_push($errors,'The description field is required.');
+        }
 
         if ( !$isPaymantable && empty($authority) )
-            array_set($errors, 'authority', 'The authority field is required.');
+            array_push($errors,'The authority field is required.');
 
-        if ($isPaymantable && empty($description) && empty(config('zarinpal.params.description')))
-            array_set($errors, 'description', 'The description field is required.');
-
-        if ( !empty($errors) )
+        if (isset($errors))
             throw new HttpResponseException(response($errors));
     }
 }

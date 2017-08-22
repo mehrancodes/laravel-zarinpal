@@ -12,7 +12,8 @@ class ZarinPalTest extends TestCase
         // Make the merchant id empty
         $this->app['config']->set('zarinpal.params.merchant-id', '');
 
-        $content = (new Payment)->request(1000, [], 'callback', 'description');
+        $content = (new Payment)->verify(2000);
+        dd($content);
 
         // No time already
     }
