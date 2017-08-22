@@ -64,7 +64,7 @@ Let's get technical. In the controller in which you will redirect the customer t
     /**
      * @param $zarinPal
      */
-    protected $paymentGateway;
+    protected $zarinPal;
 
     public function __construct(Payment $zarinPal)
     {
@@ -126,7 +126,7 @@ In the controller that handles the request:
     /**
      * @param $zarinPal
      */
-    protected $paymentGateway;
+    protected $zarinPal;
 
     public function __construct(Payment $zarinPal)
     {
