@@ -17,7 +17,7 @@ class Payment
      * @param string $description
      * @return Collection
      */
-    public function request(int $amount, array $params = [], string $callbackUrl = '', string $description = '')
+    public function request($amount, array $params = [], $callbackUrl = '', $description = '')
     {
         // validate the arguments before creating any request to Zarin Pal.
         $this->validateArguments($callbackUrl, $description, '', true);
@@ -66,7 +66,7 @@ class Payment
      *
      * @return Collection
      */
-    public function verify(int $amount, string $authority = '')
+    public function verify($amount, $authority = '')
     {
         // validate the arguments before creating any request to Zarin Pal.
         $this->validateArguments(null, null, $authority);
@@ -202,7 +202,8 @@ class Payment
         if ( !$isPaymantable && empty($authority) )
             array_push($errors,'The authority field is required.');
 
-        if (isset($errors))
+
+        if (!empty($errors))
             throw new HttpResponseException(response($errors));
     }
 }
